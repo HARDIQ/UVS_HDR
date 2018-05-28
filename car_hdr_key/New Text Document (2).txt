@@ -1,0 +1,30 @@
+CurrentMills = millis();
+
+	if (CurrentMills < 10000)
+	{
+		if (status == true)
+		{
+			fps.SetLED(true);
+			if (fps.IsPressFinger())
+			{
+				fps.CaptureFinger(false);
+				check_entry = fps.Identify1_N();
+				if (check_entry < 200)
+				{
+					radio.write(&ok, sizeof(ok));
+					fps.SetLED(false);
+					status = false;
+				}
+				else
+				{
+					radio.write(&fail, sizeof(fail));
+				}
+			}
+		}
+		Check_Button(); 
+	}
+	else if (CurrentMills >= 10000)
+	{
+		Serial.println("shutdown");
+		fps.SetLED(false);
+	}
